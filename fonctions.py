@@ -44,7 +44,7 @@ def get_user_letter():
 	global letter
 	while points > 0:
 		letter = input("Ok {}, choisissez une lettre : ".format(user_name))
-		letter = letter.lower()
+		letter = letter.lower()										# lower pour respecter la casse de la liste de mots
 		print("Vous avez choisi = ", letter)
 		try:
 			letter = int(letter)
@@ -56,20 +56,19 @@ def get_user_letter():
 				get_user_letter()
 			check_letter(content, letter)
 
-def check_letter(word, user_letter):
+def check_letter(word, user_letter):				# fonction pour verifier la presence de la lettre dans le mot
 	global points
-	global checked_letter
-	for letter in word:
-		if user_letter == letter not in checked_letter:
+	global checked_letter							# checked letter est une liste
+	for letter in word:								# parcour du mot lettre par lettre
+		if user_letter == letter not in checked_letter:	# si la lettre de l'user n'est pas déjà présente dans la liste mais dans le mot on l'ajoute a la liste
 			checked_letter += letter
-	print("points = ", points)
 	display_secret_word(content, checked_letter)
 
 
-def display_secret_word(word, checked_letter):
-	secret_word = ""
-	for letter in content:
-		if letter in checked_letter:
+def display_secret_word(word, checked_letter):		# fonction d'affichage du mot
+	secret_word = ""								# mot vide str()
+	for letter in content:							# parcours du mot a trouver
+		if letter in checked_letter:				# si une des lettres est bonne, on l'ajoute au mot sinon on met une *
 			secret_word += letter
 		else:
 			secret_word += "*"
