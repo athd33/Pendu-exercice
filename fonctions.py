@@ -12,6 +12,7 @@ from pickle import *
 content = ""
 user_name = ""
 letter = ""
+checked_letter = []
 points = 8
 secret_word = ""
 
@@ -43,8 +44,8 @@ def get_user_letter():
 	global letter
 	while points > 0:
 		letter = input("Ok {}, choisissez une lettre : ".format(user_name))
-		letter = letter.lower()								#lower pour respecter la casse de la liste de mots
-		print("Lower = ", letter)
+		letter = letter.lower()
+		print("Vous avez choisi = ", letter)
 		try:
 			letter = int(letter)
 			print("Attention, pour jouer au pendu il faut utiliser des 'lettres'")
@@ -53,4 +54,23 @@ def get_user_letter():
 			if len(letter) > 1:
 				print("Une seule lettre, merci.")
 				get_user_letter()
-			display_secret(content, letter)
+			check_letter(content, letter)
+
+def check_letter(word, user_letter):
+	global points
+	global checked_letter
+	for letter in word:
+		if user_letter == letter not in checked_letter:
+			checked_letter += letter
+	print("points = ", points)
+	display_secret_word(content, checked_letter)
+
+
+def display_secret_word(word, checked_letter):
+	secret_word = ""
+	for letter in content:
+		if letter in checked_letter:
+			secret_word += letter
+		else:
+			secret_word += "*"
+	print(secret_word)

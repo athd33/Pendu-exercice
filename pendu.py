@@ -15,5 +15,7 @@ def start_game():
 	get_random_word()
 	get_user_name()
 	get_user_letter()
+	display_secret_word(content, letter)
+
 
 start_game()
