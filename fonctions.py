@@ -5,10 +5,11 @@ from math import *
 from donnees import *
 from random import choice
 from pickle import *
+import time
 
 
 ################# VARIABLES ############################
-
+game = True
 content = ""
 user_name = ""
 letter = ""
@@ -21,9 +22,13 @@ secret_word = ""
 
 def get_random_word():										# fonctions qui ouvre le fichier donnees dans lequel se trouvent les mots
 	global content
+	print("Recherche de mot en cours...")
+	time.sleep(2)
+	print("Jeu prêt")
+	time.sleep(1)
+	print("Commençons!")
 	with open("donnees.py", "r") as data:
 		content = choice(liste_mots)					# choice retourn un element aléatoire d'une liste (liste_mots pour ce cas-ci)
-		print(content)
 
 
 def get_user_name():
@@ -42,7 +47,9 @@ def get_user_letter():
 	global points
 	game = True
 	global letter
-	while points > 0:
+	while points > 1:
+		points -= 1
+		print("Il vous reste {} tentatives!".format(points))
 		letter = input("Ok {}, choisissez une lettre : ".format(user_name))
 		letter = letter.lower()										# lower pour respecter la casse de la liste de mots
 		print("Vous avez choisi = ", letter)
@@ -54,7 +61,15 @@ def get_user_letter():
 			if len(letter) > 1:
 				print("Une seule lettre, merci.")
 				get_user_letter()
-			check_letter(content, letter)
+			elif letter == "":
+				print("J'ai besoin d'une lettre, merci")
+				time.sleep(2)
+				print("Et merci pour le point...")
+				time.sleep(2)
+			else:
+				check_letter(content, letter)
+	end_game()
+	
 
 def check_letter(word, user_letter):				# fonction pour verifier la presence de la lettre dans le mot
 	global points
@@ -62,6 +77,7 @@ def check_letter(word, user_letter):				# fonction pour verifier la presence de 
 	for letter in word:								# parcour du mot lettre par lettre
 		if user_letter == letter not in checked_letter:	# si la lettre de l'user n'est pas déjà présente dans la liste mais dans le mot on l'ajoute a la liste
 			checked_letter += letter
+			points += 1
 	display_secret_word(content, checked_letter)
 
 
@@ -73,3 +89,23 @@ def display_secret_word(word, checked_letter):		# fonction d'affichage du mot
 		else:
 			secret_word += "*"
 	print(secret_word)
+
+def end_game():
+	if points <= 1:
+		print("PERDU!!!")
+		game = False
+		retry = input("On continu? oui/non  ")
+		try:
+			retry = int(retry)
+			print("Je n'ai pas compris:")
+			end_game()
+		except:
+			if retry == "non":
+				print("Merci d'avoir joué, au revoir")
+				exit()
+			elif retry == "oui":
+				print("Ok, c'est reparti!")
+				get_random_word()
+			else:
+				print("Je n'ai pas compris, oui ou non?")
+				end_game()
