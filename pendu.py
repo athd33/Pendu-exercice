@@ -8,14 +8,16 @@ import time
 
 
 
+
+
 # PROGRAMME PRINCIPAL
 
 def start_game():
-	while game:	
-		print("Bonjour, bienvenu au jeu du pendu")
-		get_random_word()
-		get_user_name()
-		get_user_letter()
+	init_score()
+	print("Bonjour, bienvenu au jeu du pendu")
+	get_random_word()
+	get_user_name()
+	get_user_letter()
 
 
 start_game()

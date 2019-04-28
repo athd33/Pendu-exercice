@@ -1,5 +1,6 @@
 #encoding:utf-8
 
+from pendu import *
 from fonctions import *
 from math import * 
 from donnees import *
@@ -15,6 +16,7 @@ user_name = ""
 letter = ""
 checked_letter = []
 points = 8
+score = 0
 secret_word = ""
 
 ################# FONCTIONS ############################
@@ -22,25 +24,30 @@ secret_word = ""
 
 def get_random_word():										# fonctions qui ouvre le fichier donnees dans lequel se trouvent les mots
 	global content
+	time.sleep(1)
 	print("Recherche de mot en cours...")
 	time.sleep(2)
 	print("Jeu prêt")
-	time.sleep(1)
+	time.sleep(2)
 	print("Commençons!")
 	with open("donnees.py", "r") as data:
 		content = choice(liste_mots)					# choice retourn un element aléatoire d'une liste (liste_mots pour ce cas-ci)
-
+	print(content)
 
 def get_user_name():
 
-	global user_name
+	global user_name	
+	time.sleep(1)
 	user_name = input("Quel est votre nom ? ")
+	print("Bienvenu {}".format(user_name))
+	user_name = user_name.lower()
 	try:
 		user_name = int(user_name)
 		print("Pardon??")
 		get_user_name()
 	except:
 		pass
+
 
 def get_user_letter():
 	global game
@@ -49,7 +56,7 @@ def get_user_letter():
 	global letter
 	while points > 1:
 		points -= 1
-		print("Il vous reste {} tentatives!".format(points))
+		print("Joueur actuel : {} , Tentatives restantes : {}".format(user_name, points))
 		letter = input("Ok {}, choisissez une lettre : ".format(user_name))
 		letter = letter.lower()										# lower pour respecter la casse de la liste de mots
 		print("Vous avez choisi = ", letter)
@@ -89,23 +96,57 @@ def display_secret_word(word, checked_letter):		# fonction d'affichage du mot
 		else:
 			secret_word += "*"
 	print(secret_word)
+	win_condition(secret_word)
+
+def win_condition(secret_word):
+	total_letters = len(secret_word)
+	compte = 0
+	for letter in secret_word:
+		if letter == "*":
+			pass
+		else:
+			compte += 1
+	if compte == total_letters:
+		print("Gagné!!!! Vous avez marqué {} points!".format(points))
+		score["player"] = user_name 									#ajout de user_name dans score avec clé "player"
+		score["points"] = points										#
+		print("dico score : " ,score)
+		save_score(score)
+		game = False
+
+
 
 def end_game():
 	if points <= 1:
 		print("PERDU!!!")
-		game = False
-		retry = input("On continu? oui/non  ")
-		try:
-			retry = int(retry)
-			print("Je n'ai pas compris:")
-			end_game()
-		except:
-			if retry == "non":
-				print("Merci d'avoir joué, au revoir")
-				exit()
-			elif retry == "oui":
-				print("Ok, c'est reparti!")
-				get_random_word()
-			else:
-				print("Je n'ai pas compris, oui ou non?")
-				end_game()
+		time.sleep(2)
+		print("A bientot")
+
+
+
+
+def init_score():
+	global score
+	time.sleep(2)
+	print("Initiatlisation des scores")
+	try:
+		with("scores", "rb"): 
+			fichier_score = open("scores", "rb")
+			record = pickle.Unpickler(fichier_score)
+			scores = record.load()
+			fichier_score.close()
+	except:
+		score = {}
+
+
+def save_score(scores):
+	print("Enregistrement du score en cours")
+	with open("scores","wb") as fichier_scores:
+		record = pickle.Pickler(fichier_scores)
+		record.dump(scores)
+	print("Enregistrement terminé OK")
+
+
+
+
+
