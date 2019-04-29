@@ -14,7 +14,7 @@ user_name = ""
 letter = ""
 checked_letter = []
 points = 8
-score = 0
+score = {}
 secret_word = ""
 
 ################# FONCTIONS ############################
@@ -44,8 +44,8 @@ def get_user_name():
 		print("Pardon??")
 		get_user_name()
 	except:
+		print("PRINT DE LISTE SCORE :", score)
 		pass
-
 
 def get_user_letter():
 	global game
@@ -128,22 +128,29 @@ def init_score():
 	time.sleep(2)
 	print("Initiatlisation des scores")
 	try:
-		with("scores", "rb"): 
-			fichier_score = open("scores", "rb")
-			record = pickle.Unpickler(fichier_score)
-			scores = record.load()
-			fichier_score.close()
+		with open("scores", "rb") as fichier:
+			record = pickle.Unpickler(fichier)
+			score_saved = record.load()
+			print("SCORE SAVED : ", score_saved)
+	#	 as fichier: 
+	#		record = open("scores", "rb")
+	#		record = pickle.Unpickler(fichier_score)
+	#		scores = record.load()
+	#		fichier_score.close()
+	#		print("INIT SCORE : ", score)
 	except:
-		score = {}
+		print("FICHER ABSENT")
+
 
 
 def save_score(scores):
 	print("Enregistrement du score en cours")
-	with open("scores","wb") as fichier_scores:
+	with open("scores","ab") as fichier_scores:
 		record = pickle.Pickler(fichier_scores)
 		record.dump(scores)
 	print("Enregistrement terminé OK")
-
+	print("fin de jeu")
+	exit()
 
 
 
