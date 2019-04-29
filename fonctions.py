@@ -1,11 +1,9 @@
 #encoding:utf-8
 
-from pendu import *
-from fonctions import *
 from math import * 
 from donnees import *
 from random import choice
-from pickle import *
+import pickle
 import time
 
 
