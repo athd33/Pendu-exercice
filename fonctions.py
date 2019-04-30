@@ -49,12 +49,11 @@ def get_user_name():
 
 
 def check_name():
-	if user_name in score:				# verifier si la clé username est dans le dictionnaire score
-		print("Vous êtes déjà venu")
+	if user_name in score:	
+		time.sleep(1)			
+		print("Content de vous revoir {}".format(user_name))	# verifier si la clé username est dans le dictionnaire score
 	else:
 		print("Vous êtes inconnu")
-
-
 
 
 
@@ -136,7 +135,7 @@ def end_game():
 def init_score():
 	global score
 	time.sleep(2)
-	print("Initiatlisation des scores")
+	print("Initiatlisation des scores")						 # affichage de contrôle pour vérifier que la fonction se lance
 	try:
 		with open("scores", "rb") as fichier:
 			record = pickle.Unpickler(fichier)
@@ -147,11 +146,11 @@ def init_score():
 
 
 def save_score(scores):
-	print("Enregistrement du score en cours")
+	print("Enregistrement du score en cours")				# affichage de contrôle pour vérifier que la fonction se lance
 	with open("scores","wb") as fichier:
 		record = pickle.Pickler(fichier)
 		record.dump(score)
-	print("Enregistrement terminé OK")
+	print("Enregistrement terminé OK")						# affichage de contrôle pour vérifier le dump() est passé
 	print("fin de jeu")
 	exit()
 
