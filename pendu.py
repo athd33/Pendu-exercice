@@ -1,23 +1,31 @@
-#encoding:utf-8
+#coding:utf-8
 
-from donnees import *
+
+
 from fonctions import *
-from math import *
-import time
 
+game = True
+good_letter = []
+tentatives = 8
+word = ""
 
+print("Recherche de mot en cours...")
+random_word = get_random_word()
+print(f"Random word : {random_word}")
 
+user_name = get_user_name()
+print(f"Bienvenu {user_name}, nous allons commencer...")
 
+while game:
 
+    user_letter = get_user_letter()
+    myprint(f"print de user_letter : {user_letter}")
 
-# PROGRAMME PRINCIPAL
+    for letter in random_word:
+        if letter == user_letter:
+            print("Bravo")
+            good_letter += user_letter
 
-def start_game():
-	init_score()
-	print("Bonjour, bienvenu au jeu du pendu")
-	get_random_word()
-	get_user_name()
-	get_user_letter()
+    word = display_secret_word(random_word, good_letter)
+    print(word)
 
-
-start_game()
